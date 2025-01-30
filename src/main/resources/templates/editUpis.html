@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Edit Grade</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+  <h1 class="text-center">Edit Grade</h1>
+  <form th:action="@{/upisi/{id}(id=${upis.id})}" method="post">
+    <!-- Display Student and Course Name -->
+    <div class="mb-3">
+      <label class="form-label">Student</label>
+      <input type="text" class="form-control" th:value="${upis.student.ime}" disabled>
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Course</label>
+      <input type="text" class="form-control" th:value="${upis.kolegij.naziv}" disabled>
+    </div>
+
+    <!-- Input for grade -->
+    <div class="mb-3">
+      <label for="ocjena" class="form-label">Grade</label>
+      <input type="number" class="form-control" id="ocjena" name="ocjena" th:value="${upis.ocjena}" min="1" max="5" step="1" required>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Update Grade</button>
+  </form>
+</div>
+</body>
+</html>

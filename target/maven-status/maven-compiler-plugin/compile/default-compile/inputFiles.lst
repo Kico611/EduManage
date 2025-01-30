@@ -1,4 +1,13 @@
-C:\Users\HOME\Desktop\CRUD\src\main\java\com\example\CRUD\AppController.java
+C:\Users\HOME\Desktop\CRUD\src\main\java\com\example\CRUD\Controller\ProfesorController.java
+C:\Users\HOME\Desktop\CRUD\src\main\java\com\example\CRUD\Model\Profesor.java
+C:\Users\HOME\Desktop\CRUD\src\main\java\com\example\CRUD\Repository\UpisRepository.java
+C:\Users\HOME\Desktop\CRUD\src\main\java\com\example\CRUD\Model\Student.java
+C:\Users\HOME\Desktop\CRUD\src\main\java\com\example\CRUD\Controller\UpisController.java
+C:\Users\HOME\Desktop\CRUD\src\main\java\com\example\CRUD\Model\Upis.java
+C:\Users\HOME\Desktop\CRUD\src\main\java\com\example\CRUD\Model\Kolegij.java
+C:\Users\HOME\Desktop\CRUD\src\main\java\com\example\CRUD\Controller\StudentController.java
 C:\Users\HOME\Desktop\CRUD\src\main\java\com\example\CRUD\CrudApplication.java
-C:\Users\HOME\Desktop\CRUD\src\main\java\com\example\CRUD\User.java
-C:\Users\HOME\Desktop\CRUD\src\main\java\com\example\CRUD\UserRepository.java
+C:\Users\HOME\Desktop\CRUD\src\main\java\com\example\CRUD\Controller\KolegijController.java
+C:\Users\HOME\Desktop\CRUD\src\main\java\com\example\CRUD\Repository\StudentRepository.java
+C:\Users\HOME\Desktop\CRUD\src\main\java\com\example\CRUD\Repository\ProfesorRepository.java
+C:\Users\HOME\Desktop\CRUD\src\main\java\com\example\CRUD\Repository\KolegijRepository.java

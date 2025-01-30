@@ -1,4 +1,13 @@
-com\example\CRUD\UserRepository.class
-com\example\CRUD\AppController.class
-com\example\CRUD\User.class
+com\example\CRUD\Repository\ProfesorRepository.class
+com\example\CRUD\Controller\ProfesorController.class
+com\example\CRUD\Model\Student.class
+com\example\CRUD\Model\Kolegij.class
+com\example\CRUD\Repository\KolegijRepository.class
+com\example\CRUD\Repository\UpisRepository.class
+com\example\CRUD\Repository\StudentRepository.class
 com\example\CRUD\CrudApplication.class
+com\example\CRUD\Model\Upis.class
+com\example\CRUD\Model\Profesor.class
+com\example\CRUD\Controller\UpisController.class
+com\example\CRUD\Controller\KolegijController.class
+com\example\CRUD\Controller\StudentController.class
