@@ -15,8 +15,6 @@ Aplikacija za upravljanje studentskim upisima, ocjenama i kolegijima, izrađena 
 - Upravljanje upisima studenata na kolegije i unos ocjena.
 - Jednostavno sučelje za administraciju obrazovnih podataka.
 
-Aplikacija je namijenjena obrazovnim ustanovama koje žele brzo i učinkovito upravljati studentskim informacijama.
-
 ---
 
 ## 🛠️ Tehnologije korištene
