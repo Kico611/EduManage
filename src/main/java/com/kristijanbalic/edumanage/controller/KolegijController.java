@@ -1,92 +1,76 @@
 package com.kristijanbalic.edumanage.controller;
+
 import com.kristijanbalic.edumanage.entity.Kolegij;
-import com.kristijanbalic.edumanage.entity.Profesor;
-import com.kristijanbalic.edumanage.repository.KolegijRepository;
-import com.kristijanbalic.edumanage.repository.ProfesorRepository;
-import com.kristijanbalic.edumanage.repository.UpisRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.kristijanbalic.edumanage.service.KolegijService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.transaction.Transactional;
 import java.util.List;
 
 @Controller
 @RequestMapping("/courses")
 public class KolegijController {
 
-    @Autowired
-    private KolegijRepository kolegijRepository;
+    private final KolegijService kolegijService;
 
-    @Autowired
-    private ProfesorRepository profesorRepository;
-
-    @Autowired
-    private UpisRepository upisRepository;
+    public KolegijController(KolegijService kolegijService) {
+        this.kolegijService = kolegijService;
+    }
 
     @GetMapping
     public String getKolegiji(Model model) {
-        List<Kolegij> kolegiji = kolegijRepository.findAll();
-        List<Profesor> profesori = profesorRepository.findAll();
 
-        model.addAttribute("kolegiji", kolegiji);
-        model.addAttribute("professors", profesori);
+        model.addAttribute("kolegiji",
+                kolegijService.getAllKolegiji());
+
+        model.addAttribute("professors",
+                kolegijService.getAllProfesori());
+
         return "Kolegij";
     }
 
     @PostMapping
     public String createCourse(@ModelAttribute Kolegij course) {
-        kolegijRepository.save(course);
+
+        kolegijService.createKolegij(course);
+
         return "redirect:/courses";
     }
 
     @GetMapping("/{id}/edit")
-    public String showEditCourseForm(@PathVariable Long id, Model model) {
-        System.out.println("Accessing edit form for course with id: " + id);
-        Kolegij course = kolegijRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Course not found"));
+    public String showEditCourseForm(@PathVariable Long id,
+                                     Model model) {
 
-        List<Profesor> allProfessors = profesorRepository.findAll();
-        model.addAttribute("course", course);
-        model.addAttribute("allProfessors", allProfessors);
+        model.addAttribute(
+                "course",
+                kolegijService.getKolegijById(id)
+        );
+
+        model.addAttribute(
+                "allProfessors",
+                kolegijService.getAllProfesori()
+        );
+
         return "editKolegij";
     }
 
     @PostMapping("/{id}")
-    public String updateCourse(@PathVariable Long id,
-                               @ModelAttribute Kolegij course,
-                               @RequestParam List<Long> profesori) {
+    public String updateCourse(
+            @PathVariable Long id,
+            @ModelAttribute Kolegij course,
+            @RequestParam List<Long> profesori) {
 
-        System.out.println("Updating course with id: " + id);
-        Kolegij existingCourse = kolegijRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Course not found"));
+        kolegijService.updateKolegij(id, course, profesori);
 
-        existingCourse.setNaziv(course.getNaziv());
-
-        List<Profesor> selectedProfessors = profesorRepository.findAllById(profesori);
-        existingCourse.setProfesori(selectedProfessors);
-
-        kolegijRepository.save(existingCourse);
         return "redirect:/courses";
     }
 
-    @Transactional
     @DeleteMapping("/{id}/delete")
     public String deleteCourse(@PathVariable Long id) {
 
-        Kolegij kolegij = kolegijRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Course not found"));
-
-        for (Profesor profesor : kolegij.getProfesori()) {
-            profesor.getKolegiji().remove(kolegij);
-            profesorRepository.save(profesor);
-        }
-
-        upisRepository.deleteByKolegijId(id);
-        kolegijRepository.delete(kolegij);
+        kolegijService.deleteKolegij(id);
 
         return "redirect:/courses";
     }
-
 }

@@ -11,6 +11,7 @@ public class Profesor {
     private Long id;
     private String ime;
     private String prezime;
+    @Transient
     private String kolegijiImena;
 
     @ManyToMany(mappedBy = "profesori")

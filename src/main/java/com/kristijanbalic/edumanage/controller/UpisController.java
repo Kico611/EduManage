@@ -1,72 +1,64 @@
 package com.kristijanbalic.edumanage.controller;
 
 import com.kristijanbalic.edumanage.entity.Upis;
-import com.kristijanbalic.edumanage.repository.UpisRepository;
-import com.kristijanbalic.edumanage.repository.StudentRepository;
-import com.kristijanbalic.edumanage.repository.KolegijRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.kristijanbalic.edumanage.service.UpisService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/upisi")
 public class UpisController {
 
-    @Autowired
-    private UpisRepository upisRepository;
+    private final UpisService upisService;
 
-    @Autowired
-    private StudentRepository studentRepository;
-
-    @Autowired
-    private KolegijRepository kolegijRepository;
+    public UpisController(UpisService upisService) {
+        this.upisService = upisService;
+    }
 
     @GetMapping
     public String sviUpisi(Model model) {
-        model.addAttribute("upisi", upisRepository.findAll());
-        model.addAttribute("students", studentRepository.findAll());
-        model.addAttribute("kolegiji", kolegijRepository.findAll());
+
+        model.addAttribute("upisi", upisService.getAllUpisi());
+        model.addAttribute("students", upisService.getAllStudents());
+        model.addAttribute("kolegiji", upisService.getAllKolegiji());
+
         return "Upis";
     }
 
     @GetMapping("/{id}/edit")
     public String urediUpisForma(@PathVariable Long id, Model model) {
-        Optional<Upis> upis = upisRepository.findById(id);
-        if(upis.isEmpty()) {
-            return "redirect:/upisi";
-        }
-        model.addAttribute("upis", upis.get());
-        model.addAttribute("students", studentRepository.findAll());
-        model.addAttribute("kolegiji", kolegijRepository.findAll());
+
+        model.addAttribute("upis", upisService.getUpisById(id));
+        model.addAttribute("students", upisService.getAllStudents());
+        model.addAttribute("kolegiji", upisService.getAllKolegiji());
+
         return "editUpis";
     }
 
     @PostMapping
     public String kreirajUpis(@ModelAttribute Upis upis) {
-        upisRepository.save(upis);
+
+        upisService.createUpis(upis);
+
         return "redirect:/upisi";
     }
 
     @PostMapping("/{id}")
-    public String updateUpis(@PathVariable Long id, @RequestParam(required = false) Integer ocjena) {
-        Upis upis = upisRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid upis ID"));
+    public String updateUpis(
+            @PathVariable Long id,
+            @RequestParam(required = false) Integer ocjena) {
 
-        upis.setOcjena(ocjena);
+        upisService.updateOcjena(id, ocjena);
 
-        upisRepository.save(upis);
         return "redirect:/upisi";
     }
 
     @DeleteMapping("/{id}/delete")
     public String obrisiUpis(@PathVariable Long id) {
-        if (!upisRepository.existsById(id)) {
-            return "redirect:/upisi?error=Upis+ne+postoji";
-        }
-        upisRepository.deleteById(id);
+
+        upisService.deleteUpis(id);
+
         return "redirect:/upisi";
     }
-
 }

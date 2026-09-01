@@ -1,29 +1,24 @@
 package com.kristijanbalic.edumanage.controller;
 
 import com.kristijanbalic.edumanage.entity.Student;
-import com.kristijanbalic.edumanage.repository.StudentRepository;
-import com.kristijanbalic.edumanage.repository.UpisRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.kristijanbalic.edumanage.service.StudentService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Controller
 @RequestMapping("/students")
 public class StudentController {
 
-    @Autowired
-    private StudentRepository studentRepository;
+    private final StudentService studentService;
 
-    @Autowired
-    private UpisRepository upisRepository;
+    public StudentController(StudentService studentService) {
+        this.studentService = studentService;
+    }
 
     @GetMapping
     public String getStudents(Model model) {
-        List<Student> students = studentRepository.findAll();
-        model.addAttribute("students", students);
+        model.addAttribute("students", studentService.getAllStudents());
         return "Student";
     }
 
@@ -35,32 +30,26 @@ public class StudentController {
 
     @PostMapping
     public String saveStudent(@ModelAttribute Student student) {
-        studentRepository.save(student);
+        studentService.saveStudent(student);
         return "redirect:/students";
     }
 
     @GetMapping("/{id}/edit")
     public String showEditForm(@PathVariable Long id, Model model) {
-        Student student = studentRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Invalid student ID: " + id));
-        model.addAttribute("student", student);
+        model.addAttribute("student", studentService.getStudentById(id));
         return "editStudent";
     }
 
     @PostMapping("/{id}/edit")
-    public String updateStudent(@PathVariable Long id, @ModelAttribute Student student) {
-        if (studentRepository.existsById(id)) {
-            student.setId(id);
-            studentRepository.save(student);
-        }
+    public String updateStudent(@PathVariable Long id,
+                                @ModelAttribute Student student) {
+        studentService.updateStudent(id, student);
         return "redirect:/students";
     }
 
     @DeleteMapping("/{id}/delete")
     public String deleteStudent(@PathVariable Long id) {
-        upisRepository.deleteByStudentId(id);
-        studentRepository.deleteById(id);
+        studentService.deleteStudent(id);
         return "redirect:/students";
     }
-
 }
