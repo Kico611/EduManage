@@ -9,7 +9,7 @@ import java.util.List;
 public class Profesor {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank(message = "First name is required")

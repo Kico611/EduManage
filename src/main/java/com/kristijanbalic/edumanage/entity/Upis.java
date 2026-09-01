@@ -17,7 +17,7 @@ import jakarta.validation.constraints.NotNull;
 public class Upis {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotNull(message = "Student is required")
