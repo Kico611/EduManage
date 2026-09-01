@@ -2,8 +2,10 @@ package com.kristijanbalic.edumanage.controller;
 
 import com.kristijanbalic.edumanage.entity.Profesor;
 import com.kristijanbalic.edumanage.service.ProfesorService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +25,7 @@ public class ProfesorController {
 
         model.addAttribute("profesori", profesorService.getAllProfesori());
         model.addAttribute("kolegiji", profesorService.getAllKolegiji());
+        model.addAttribute("profesor", new Profesor());
 
         return "Profesor";
     }
@@ -31,6 +34,7 @@ public class ProfesorController {
     public String showAddProfesorForm(Model model) {
 
         model.addAttribute("profesor", new Profesor());
+        model.addAttribute("profesori", profesorService.getAllProfesori());
         model.addAttribute("kolegiji", profesorService.getAllKolegiji());
 
         return "Profesor";
@@ -38,9 +42,18 @@ public class ProfesorController {
 
     @PostMapping
     public String saveProfesor(
-            @ModelAttribute Profesor profesor,
+            @Valid @ModelAttribute("profesor") Profesor profesor,
+            BindingResult bindingResult,
             @RequestParam(name = "kolegiji", required = false)
-            List<Long> kolegijiIds) {
+            List<Long> kolegijiIds,
+            Model model) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("profesori", profesorService.getAllProfesori());
+            model.addAttribute("kolegiji", profesorService.getAllKolegiji());
+
+            return "Profesor";
+        }
 
         profesorService.saveProfesor(profesor, kolegijiIds);
 
@@ -66,7 +79,15 @@ public class ProfesorController {
     @PostMapping("/{id}/edit")
     public String updateProfesor(
             @PathVariable Long id,
-            @ModelAttribute Profesor profesor) {
+            @Valid @ModelAttribute("profesor") Profesor profesor,
+            BindingResult bindingResult,
+            Model model) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("kolegiji", profesorService.getAllKolegiji());
+
+            return "editProfesor";
+        }
 
         profesorService.updateProfesor(id, profesor);
 

@@ -1,6 +1,8 @@
 package com.kristijanbalic.edumanage.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+
 import java.util.List;
 
 @Entity
@@ -10,6 +12,7 @@ public class Kolegij {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    @NotBlank(message = "Course name is required")
     @Column(unique = true)
     private String naziv;
 
@@ -19,7 +22,6 @@ public class Kolegij {
             joinColumns = @JoinColumn(name = "kolegij_id"),
             inverseJoinColumns = @JoinColumn(name = "profesor_id")
     )
-
     private List<Profesor> profesori;
 
     public Long getId() {

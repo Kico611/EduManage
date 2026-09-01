@@ -2,8 +2,10 @@ package com.kristijanbalic.edumanage.controller;
 
 import com.kristijanbalic.edumanage.entity.Upis;
 import com.kristijanbalic.edumanage.service.UpisService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -22,6 +24,7 @@ public class UpisController {
         model.addAttribute("upisi", upisService.getAllUpisi());
         model.addAttribute("students", upisService.getAllStudents());
         model.addAttribute("kolegiji", upisService.getAllKolegiji());
+        model.addAttribute("upis", new Upis());
 
         return "Upis";
     }
@@ -37,7 +40,18 @@ public class UpisController {
     }
 
     @PostMapping
-    public String kreirajUpis(@ModelAttribute Upis upis) {
+    public String kreirajUpis(
+            @Valid @ModelAttribute("upis") Upis upis,
+            BindingResult bindingResult,
+            Model model) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("upisi", upisService.getAllUpisi());
+            model.addAttribute("students", upisService.getAllStudents());
+            model.addAttribute("kolegiji", upisService.getAllKolegiji());
+
+            return "Upis";
+        }
 
         upisService.createUpis(upis);
 

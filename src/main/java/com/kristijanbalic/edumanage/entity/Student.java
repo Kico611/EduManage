@@ -1,17 +1,32 @@
 package com.kristijanbalic.edumanage.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Student {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @NotBlank(message = "Name is required")
     private String ime;
+
+    @NotBlank(message = "Email is required")
+    @Email(message = "Email format is invalid")
     private String email;
+
+    @NotBlank(message = "Address is required")
     private String adresa;
+
+    @NotBlank(message = "Student index number is required")
     @Column(unique = true)
     private String brojIndeksa;
+
+    @Min(value = 2000, message = "Enrollment year must be 2000 or later")
     private int godinaUpisa;
 
     public Long getId() {
@@ -61,5 +76,4 @@ public class Student {
     public void setGodinaUpisa(int godinaUpisa) {
         this.godinaUpisa = godinaUpisa;
     }
-
 }

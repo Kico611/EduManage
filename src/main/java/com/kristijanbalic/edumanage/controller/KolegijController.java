@@ -2,8 +2,10 @@ package com.kristijanbalic.edumanage.controller;
 
 import com.kristijanbalic.edumanage.entity.Kolegij;
 import com.kristijanbalic.edumanage.service.KolegijService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,26 +23,40 @@ public class KolegijController {
     @GetMapping
     public String getKolegiji(Model model) {
 
-        model.addAttribute("kolegiji",
-                kolegijService.getAllKolegiji());
-
-        model.addAttribute("professors",
-                kolegijService.getAllProfesori());
+        model.addAttribute("kolegiji", kolegijService.getAllKolegiji());
+        model.addAttribute("professors", kolegijService.getAllProfesori());
+        model.addAttribute("course", new Kolegij());
 
         return "Kolegij";
     }
 
     @PostMapping
-    public String createCourse(@ModelAttribute Kolegij course) {
+    public String createCourse(
+            @Valid @ModelAttribute("course") Kolegij course,
+            BindingResult bindingResult,
+            @RequestParam(name = "profesori", required = false)
+            List<Long> profesori,
+            Model model) {
 
-        kolegijService.createKolegij(course);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("kolegiji", kolegijService.getAllKolegiji());
+            model.addAttribute("professors", kolegijService.getAllProfesori());
+
+            return "Kolegij";
+        }
+
+        kolegijService.createKolegij(
+                course,
+                profesori != null ? profesori : List.of()
+        );
 
         return "redirect:/courses";
     }
 
     @GetMapping("/{id}/edit")
-    public String showEditCourseForm(@PathVariable Long id,
-                                     Model model) {
+    public String showEditCourseForm(
+            @PathVariable Long id,
+            Model model) {
 
         model.addAttribute(
                 "course",
@@ -58,10 +74,26 @@ public class KolegijController {
     @PostMapping("/{id}")
     public String updateCourse(
             @PathVariable Long id,
-            @ModelAttribute Kolegij course,
-            @RequestParam List<Long> profesori) {
+            @Valid @ModelAttribute("course") Kolegij course,
+            BindingResult bindingResult,
+            @RequestParam(name = "profesori", required = false)
+            List<Long> profesori,
+            Model model) {
 
-        kolegijService.updateKolegij(id, course, profesori);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute(
+                    "allProfessors",
+                    kolegijService.getAllProfesori()
+            );
+
+            return "editKolegij";
+        }
+
+        kolegijService.updateKolegij(
+                id,
+                course,
+                profesori != null ? profesori : List.of()
+        );
 
         return "redirect:/courses";
     }

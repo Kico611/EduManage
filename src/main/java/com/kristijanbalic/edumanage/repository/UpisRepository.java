@@ -16,5 +16,10 @@ public interface UpisRepository extends JpaRepository<Upis, Long> {
     void deleteByStudentId(@Param("studentId") Long studentId);
 
     void deleteByKolegijId(Long id);
+
+    boolean existsByStudentIdAndKolegijId(
+            Long studentId,
+            Long kolegijId
+    );
 }
 

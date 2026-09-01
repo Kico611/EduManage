@@ -1,6 +1,8 @@
 package com.kristijanbalic.edumanage.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+
 import java.util.List;
 
 @Entity
@@ -9,8 +11,13 @@ public class Profesor {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @NotBlank(message = "First name is required")
     private String ime;
+
+    @NotBlank(message = "Last name is required")
     private String prezime;
+
     @Transient
     private String kolegijiImena;
 
@@ -33,7 +40,6 @@ public class Profesor {
         this.kolegiji = kolegiji;
     }
 
-    // Getter i setter za id
     public Long getId() {
         return id;
     }
@@ -50,7 +56,6 @@ public class Profesor {
         this.ime = ime;
     }
 
-    // Getter i setter za prezime
     public String getPrezime() {
         return prezime;
     }
@@ -58,5 +63,4 @@ public class Profesor {
     public void setPrezime(String prezime) {
         this.prezime = prezime;
     }
-
 }

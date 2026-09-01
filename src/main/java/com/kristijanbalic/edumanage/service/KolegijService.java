@@ -7,6 +7,7 @@ import com.kristijanbalic.edumanage.repository.ProfesorRepository;
 import com.kristijanbalic.edumanage.repository.UpisRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.kristijanbalic.edumanage.exception.KolegijNotFoundException;
 
 import java.util.List;
 
@@ -31,15 +32,22 @@ public class KolegijService {
 
     public Kolegij getKolegijById(Long id) {
         return kolegijRepository.findById(id)
-                .orElseThrow(() ->
-                        new IllegalArgumentException("Course not found with id: " + id));
+                .orElseThrow(() -> new KolegijNotFoundException(id));
     }
 
     public List<Profesor> getAllProfesori() {
         return profesorRepository.findAll();
     }
 
-    public Kolegij createKolegij(Kolegij kolegij) {
+    @Transactional
+    public Kolegij createKolegij(Kolegij kolegij,
+                                 List<Long> profesoriIds) {
+
+        List<Profesor> profesori =
+                profesorRepository.findAllById(profesoriIds);
+
+        kolegij.setProfesori(profesori);
+
         return kolegijRepository.save(kolegij);
     }
 

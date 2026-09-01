@@ -6,6 +6,7 @@ import com.kristijanbalic.edumanage.repository.KolegijRepository;
 import com.kristijanbalic.edumanage.repository.ProfesorRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.kristijanbalic.edumanage.exception.ProfesorNotFoundException;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,8 +39,7 @@ public class ProfesorService {
 
     public Profesor getProfesorById(Long id) {
         return profesorRepository.findById(id)
-                .orElseThrow(() ->
-                        new IllegalArgumentException("Invalid profesor ID: " + id));
+                .orElseThrow(() -> new ProfesorNotFoundException(id));
     }
 
     public List<Kolegij> getAllKolegiji() {

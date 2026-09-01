@@ -2,8 +2,10 @@ package com.kristijanbalic.edumanage.controller;
 
 import com.kristijanbalic.edumanage.entity.Student;
 import com.kristijanbalic.edumanage.service.StudentService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -19,17 +21,28 @@ public class StudentController {
     @GetMapping
     public String getStudents(Model model) {
         model.addAttribute("students", studentService.getAllStudents());
+        model.addAttribute("student", new Student());
         return "Student";
     }
 
     @GetMapping("/new")
     public String showAddStudentForm(Model model) {
         model.addAttribute("student", new Student());
+        model.addAttribute("students", studentService.getAllStudents());
         return "Student";
     }
 
     @PostMapping
-    public String saveStudent(@ModelAttribute Student student) {
+    public String saveStudent(
+            @Valid @ModelAttribute("student") Student student,
+            BindingResult bindingResult,
+            Model model) {
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("students", studentService.getAllStudents());
+            return "Student";
+        }
+
         studentService.saveStudent(student);
         return "redirect:/students";
     }
@@ -41,8 +54,15 @@ public class StudentController {
     }
 
     @PostMapping("/{id}/edit")
-    public String updateStudent(@PathVariable Long id,
-                                @ModelAttribute Student student) {
+    public String updateStudent(
+            @PathVariable Long id,
+            @Valid @ModelAttribute("student") Student student,
+            BindingResult bindingResult) {
+
+        if (bindingResult.hasErrors()) {
+            return "editStudent";
+        }
+
         studentService.updateStudent(id, student);
         return "redirect:/students";
     }

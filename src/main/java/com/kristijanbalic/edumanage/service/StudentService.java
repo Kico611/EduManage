@@ -4,6 +4,7 @@ import com.kristijanbalic.edumanage.entity.Student;
 import com.kristijanbalic.edumanage.repository.StudentRepository;
 import com.kristijanbalic.edumanage.repository.UpisRepository;
 import org.springframework.stereotype.Service;
+import com.kristijanbalic.edumanage.exception.StudentNotFoundException;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -26,8 +27,7 @@ public class StudentService {
 
     public Student getStudentById(Long id) {
         return studentRepository.findById(id)
-                .orElseThrow(() ->
-                        new IllegalArgumentException("Invalid student ID: " + id));
+                .orElseThrow(() -> new StudentNotFoundException(id));
     }
 
     public Student saveStudent(Student student) {
