@@ -1,11 +1,15 @@
 package com.kristijanbalic.edumanage.service;
 
 import com.kristijanbalic.edumanage.entity.Student;
+import com.kristijanbalic.edumanage.exception.StudentNotFoundException;
 import com.kristijanbalic.edumanage.repository.StudentRepository;
 import com.kristijanbalic.edumanage.repository.UpisRepository;
+import com.kristijanbalic.edumanage.repository.UserRepository;
+import com.kristijanbalic.edumanage.security.Role;
+import com.kristijanbalic.edumanage.security.User;
+import jakarta.transaction.Transactional;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import com.kristijanbalic.edumanage.exception.StudentNotFoundException;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -14,11 +18,18 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
     private final UpisRepository upisRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public StudentService(StudentRepository studentRepository,
-                          UpisRepository upisRepository) {
+                          UpisRepository upisRepository,
+                          UserRepository userRepository,
+                          PasswordEncoder passwordEncoder) {
+
         this.studentRepository = studentRepository;
         this.upisRepository = upisRepository;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<Student> getAllStudents() {
@@ -30,11 +41,33 @@ public class StudentService {
                 .orElseThrow(() -> new StudentNotFoundException(id));
     }
 
+    @Transactional
     public Student saveStudent(Student student) {
-        return studentRepository.save(student);
+
+        Student savedStudent = studentRepository.save(student);
+
+        if (userRepository
+                .findByUsername(savedStudent.getBrojIndeksa())
+                .isEmpty()) {
+
+            User user = new User();
+
+            user.setUsername(savedStudent.getBrojIndeksa());
+            user.setPassword(
+                    passwordEncoder.encode("student123")
+            );
+            user.setRole(Role.STUDENT);
+            user.setStudent(savedStudent);
+
+            userRepository.save(user);
+        }
+
+        return savedStudent;
     }
 
+    @Transactional
     public Student updateStudent(Long id, Student student) {
+
         Student existingStudent = getStudentById(id);
 
         existingStudent.setIme(student.getIme());
@@ -48,6 +81,7 @@ public class StudentService {
 
     @Transactional
     public void deleteStudent(Long id) {
+
         getStudentById(id);
 
         upisRepository.deleteByStudentId(id);

@@ -23,6 +23,10 @@ public class UpisService {
     private final StudentRepository studentRepository;
     private final KolegijRepository kolegijRepository;
 
+    public List<Upis> getUpisiForStudent(Long studentId) {
+        return upisRepository.findByStudentId(studentId);
+    }
+
     public UpisService(UpisRepository upisRepository,
                        StudentRepository studentRepository,
                        KolegijRepository kolegijRepository) {

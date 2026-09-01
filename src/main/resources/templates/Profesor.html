@@ -157,6 +157,14 @@
                     <a class="nav-link" href="/upisi">Enrollments</a>
                 </li>
 
+                <li class="nav-item d-flex align-items-center ms-2">
+                    <form th:action="@{/logout}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-outline-light btn-sm">
+                            Logout
+                        </button>
+                    </form>
+                </li>
+
             </ul>
 
         </div>

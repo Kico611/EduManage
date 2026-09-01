@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import jakarta.transaction.Transactional;
+import java.util.List;
 
 @Repository
 public interface UpisRepository extends JpaRepository<Upis, Long> {
@@ -21,5 +22,7 @@ public interface UpisRepository extends JpaRepository<Upis, Long> {
             Long studentId,
             Long kolegijId
     );
+
+    List<Upis> findByStudentId(Long studentId);
 }
 
