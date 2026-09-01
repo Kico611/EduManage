@@ -1,4 +1,4 @@
-package com.kristijanbalic.edumanage.Model;
+package com.kristijanbalic.edumanage.entity;
 
 import jakarta.persistence.*;
 import java.util.List;

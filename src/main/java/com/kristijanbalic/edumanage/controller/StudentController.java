@@ -1,8 +1,8 @@
-package com.kristijanbalic.edumanage.Controller;
+package com.kristijanbalic.edumanage.controller;
 
-import com.kristijanbalic.edumanage.Model.Student;
-import com.kristijanbalic.edumanage.Repository.StudentRepository;
-import com.kristijanbalic.edumanage.Repository.UpisRepository;
+import com.kristijanbalic.edumanage.entity.Student;
+import com.kristijanbalic.edumanage.repository.StudentRepository;
+import com.kristijanbalic.edumanage.repository.UpisRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

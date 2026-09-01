@@ -1,8 +1,7 @@
-package com.kristijanbalic.edumanage.Model;
+package com.kristijanbalic.edumanage.entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
-import java.util.Random;
+
 @Entity
 public class Student {
     @Id

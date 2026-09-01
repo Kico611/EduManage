@@ -1,5 +1,5 @@
-package com.kristijanbalic.edumanage.Repository;
-import com.kristijanbalic.edumanage.Model.Upis;
+package com.kristijanbalic.edumanage.repository;
+import com.kristijanbalic.edumanage.entity.Upis;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

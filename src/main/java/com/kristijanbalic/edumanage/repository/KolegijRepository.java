@@ -1,6 +1,6 @@
-package com.kristijanbalic.edumanage.Repository;
+package com.kristijanbalic.edumanage.repository;
 
-import com.kristijanbalic.edumanage.Model.Kolegij;
+import com.kristijanbalic.edumanage.entity.Kolegij;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
