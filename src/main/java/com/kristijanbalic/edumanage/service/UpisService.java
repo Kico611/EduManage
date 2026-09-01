@@ -12,6 +12,10 @@ import com.kristijanbalic.edumanage.exception.UpisNotFoundException;
 import java.util.List;
 import com.kristijanbalic.edumanage.exception.InvalidGradeException;
 import com.kristijanbalic.edumanage.exception.DuplicateEnrollmentException;
+import com.kristijanbalic.edumanage.exception.StudentNotFoundException;
+import com.kristijanbalic.edumanage.exception.KolegijNotFoundException;
+import com.kristijanbalic.edumanage.exception.DuplicateEnrollmentException;
+import com.kristijanbalic.edumanage.exception.InvalidGradeException;
 @Service
 public class UpisService {
 
@@ -80,5 +84,31 @@ public class UpisService {
         Upis upis = getUpisById(id);
 
         upisRepository.delete(upis);
+    }
+
+    public Upis createUpis(Long studentId,
+                           Long kolegijId,
+                           Integer ocjena) {
+
+        Student student = studentRepository.findById(studentId)
+                .orElseThrow(() -> new StudentNotFoundException(studentId));
+
+        Kolegij kolegij = kolegijRepository.findById(kolegijId)
+                .orElseThrow(() -> new KolegijNotFoundException(kolegijId));
+
+        if (upisRepository.existsByStudentIdAndKolegijId(studentId, kolegijId)) {
+            throw new DuplicateEnrollmentException(studentId, kolegijId);
+        }
+
+        if (ocjena != null && (ocjena < 1 || ocjena > 5)) {
+            throw new InvalidGradeException(ocjena);
+        }
+
+        Upis upis = new Upis();
+        upis.setStudent(student);
+        upis.setKolegij(kolegij);
+        upis.setOcjena(ocjena);
+
+        return upisRepository.save(upis);
     }
 }
