@@ -1,11 +1,9 @@
-# Koristi openjdk 17 kao osnovnu sliku
-FROM openjdk:17
+FROM eclipse-temurin:21-jre
 
-# Kopiraj JAR datoteku unutar kontejnera
-COPY target/CRUD-0.0.1-SNAPSHOT.jar app.jar
+WORKDIR /app
 
-# Postavi varijablu okruženja
-ENV JAVA_OPTS=""
+COPY target/edumanage-0.0.1-SNAPSHOT.jar app.jar
 
-# Pokreni aplikaciju
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+EXPOSE 8080
+
+ENTRYPOINT ["java", "-jar", "app.jar"]

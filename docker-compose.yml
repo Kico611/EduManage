@@ -1,28 +1,43 @@
-version: '3.7'
 services:
   mysql:
     image: mysql:8.0
-    container_name: mysql
+    container_name: edumanage-mysql
+
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: crud
-      MYSQL_USER: kico
-      MYSQL_PASSWORD: root
+      MYSQL_DATABASE: edumanage
+      MYSQL_USER: edumanage
+      MYSQL_PASSWORD: edumanage
+
     ports:
       - "3307:3306"
+
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
     networks:
       - app-network
 
   app:
     build: .
+    container_name: edumanage-app
+
     ports:
       - "8080:8080"
+
     depends_on:
-      - mysql
+      mysql:
+        condition: service_healthy
+
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/crud
-      SPRING_DATASOURCE_USERNAME: kico
-      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/edumanage
+      SPRING_DATASOURCE_USERNAME: edumanage
+      SPRING_DATASOURCE_PASSWORD: edumanage
+
     networks:
       - app-network
 
