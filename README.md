@@ -7,6 +7,31 @@ The application was built as a backend-focused project to explore Spring Boot ar
 
 ---
 
+## 🚀 Live Demo
+
+Try EduManage live:
+
+```text
+http://64.226.77.249:8080/login
+```
+
+### Demo Credentials
+
+| Role        | Username      | Password         |
+| ----------- | ------------- | ----------------- |
+| `ADMIN`     | admin          | admin123           |
+| `PROFESSOR` | professor      | professor123       |
+| `STUDENT`   | 14024          | student123          |
+
+> ⚠️ Note: This is a demo instance hosted on a personal VPS for portfolio purposes. Response times may vary, and data may be periodically reset.
+
+Swagger UI:
+
+```text
+http://64.226.77.249:8080/swagger-ui/index.html
+```
+---
+
 ## ✨ Features
 
 ### Student Management
