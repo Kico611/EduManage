@@ -9,27 +9,24 @@ The application was built as a backend-focused project to explore Spring Boot ar
 
 ## 🚀 Live Demo
 
-Try EduManage live:
+Try the deployed version of **EduManage**:
 
-```text
-http://64.226.77.249:8080/login
-```
+👉[Open EduManage Live Demo](http://64.226.77.249:8080/login)
 
-### Demo Credentials
+### Demo Accounts
 
-| Role        | Username      | Password         |
-| ----------- | ------------- | ----------------- |
-| `ADMIN`     | admin          | admin123           |
-| `PROFESSOR` | professor      | professor123       |
-| `STUDENT`   | 14024          | student123          |
+| Role        | Username    | Password       |
+| ----------- | ----------- | -------------- |
+| `ADMIN`     | `admin`     | `admin123`     |
+| `PROFESSOR` | `professor` | `professor123` |
+| `STUDENT`   | `14024`     | `student123`   |
 
-> ⚠️ Note: This is a demo instance hosted on a personal VPS for portfolio purposes. Response times may vary, and data may be periodically reset.
+> This deployment is provided for portfolio and demonstration purposes. The application is hosted on a personal VPS, so availability and response times may vary, and demo data may be reset periodically.
 
-Swagger UI:
+### API Documentation
 
-```text
-http://64.226.77.249:8080/swagger-ui/index.html
-```
+👉[Open Swagger UI](http://64.226.77.249:8080/swagger-ui/index.html)
+
 ---
 
 ## ✨ Features
